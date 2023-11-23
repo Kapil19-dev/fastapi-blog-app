@@ -4,6 +4,7 @@ from db.session import engine
 from db.base_class import Base
 
 
+
 def create_tables():
     Base.metadata.create_all(bind=engine)
 
