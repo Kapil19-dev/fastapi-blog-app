@@ -1,16 +1,22 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+from fastapi import FastAPI
+from backend.core.config import settings
+from backend.db.session import engine
+from backend.db.base_class import Base
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def create_tables():
+    Base.metadata.create_all(bind=engine)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+def start_application():
+    app = FastAPI(title=settings.PROJECT_TITLE, version=settings.PROJECT_VERSION)
+    create_tables()
+    return app
+
+
+app = start_application()
+
+
+@app.get("/")
+async def hello():
+    return {"msg": "hello world"}
